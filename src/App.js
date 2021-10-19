@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+
+const URL = 'http://localhost/mywebservice/index.php';
 
 function App() {
+  const [names, setNames] = useState([]);
+
+  useEffect(getData, [])
+
+  function getData() {
+    axios.get(URL)
+      .then((response) => {
+        setNames(response.data);
+      }).catch(error => {
+        alert(error);
+      });
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: 30 }}>
+      <h3>Names</h3>
+      <ol>
+        {names.map(person => (
+          <li>{person.lastname}, {person.firstname}, {person.email}</li>
+        ))}
+      </ol>
     </div>
   );
 }
